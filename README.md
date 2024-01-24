@@ -1,6 +1,6 @@
 
 
-# How To Build and Deploy a ChatGPT Clone Application With React and OpenAI API
+# Build a tool to bulk update WordPress plugins in multiple sites with KinstaAPI
 
 In this tutorial, you will learn how to build a ChatGPT clone application using React and the OpenAI API. If you want to try your hand at a fun and engaging project over the weekend, this is a great opportunity to dive into React and OpenAI.
 
