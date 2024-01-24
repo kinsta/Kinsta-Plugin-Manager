@@ -1,10 +1,10 @@
-
+![image](https://github.com/olawanlejoel/Kinsta-Plugin-Manager/assets/57611810/d8a51308-103f-44b7-9e0b-f9df00c98061)
 
 # Build a tool to bulk update WordPress plugins in multiple sites with KinstaAPI
 
 In this tutorial, you will learn how to build a ChatGPT clone application using React and the OpenAI API. If you want to try your hand at a fun and engaging project over the weekend, this is a great opportunity to dive into React and OpenAI.
 
-Read the [full article](https://kinsta.com/blog/chatgpt-clone/).
+Read the [full article]().
 
 ## Installation
 1. Clone or fork the repository.
