@@ -2,7 +2,7 @@
 
 # Build a tool to bulk update WordPress plugins in multiple sites with KinstaAPI
 
-In this tutorial, you will learn how to build a ChatGPT clone application using React and the OpenAI API. If you want to try your hand at a fun and engaging project over the weekend, this is a great opportunity to dive into React and OpenAI.
+This guide walks you through the process of creating a WordPress plugin manager. This tool is designed to efficiently identify all the sites under your Kinsta company account that are utilizing a particular plugin. Once identified, you'll have the flexibility to update this plugin either across all these sites at once or on a site-by-site basis.
 
 Read the [full article]().
 
