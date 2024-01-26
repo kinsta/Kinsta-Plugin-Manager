@@ -1,20 +1,17 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 import KinstaLogo from './images/kinsta_logo.png';
 
 const App = () => {
 	const [pluginName, setPluginName] = useState('');
+	const [plugins, setPlugins] = useState([]);
 	const [sites, setSites] = useState([]);
 	const [isLoading, setIsLoading] = useState(false);
 	const [showStatusBar, setShowStatusBar] = useState(false);
 
 	const KinstaAPIUrl = 'https://api.kinsta.com/v2';
 
-	const fetchSites = async () => {
-		setIsLoading(true);
-		setSites([]);
-
-		// Get all sites for the company
+	const getSitesWithPluginData = async () => {
 		const query = new URLSearchParams({
 			company: process.env.REACT_APP_KINSTA_COMPANY_ID,
 		}).toString();
@@ -79,6 +76,35 @@ const App = () => {
 
 		// Wait for all the promises to resolve
 		const sitesWithPluginData = await Promise.all(sitesWithPlugin);
+		return sitesWithPluginData;
+	};
+
+	useEffect(() => {
+		const fetchAllSitesPlugins = async () => {
+			const sitesWithPluginData = await getSitesWithPluginData();
+
+			// get all plugins
+			const allPlugins = sitesWithPluginData.map((site) => {
+				const { plugins } = site;
+				return plugins.wp_plugins.data;
+			});
+
+			// get unique plugins
+			const uniquePlugins = [
+				...new Set(allPlugins.flat().map((plugin) => plugin.name)),
+			];
+
+			setPlugins(uniquePlugins);
+		};
+
+		fetchAllSitesPlugins();
+	}, []);
+
+	const fetchSites = async () => {
+		setIsLoading(true);
+		setSites([]);
+
+		const sitesWithPluginData = await getSitesWithPluginData();
 
 		// Filter out sites that don't have the plugin
 		const sitesWithPluginDataFiltered = sitesWithPluginData
@@ -236,14 +262,25 @@ const App = () => {
 				<form>
 					<div className="form-control">
 						<label htmlFor="plugin-name">Plugin name</label>
-						<input
-							type="text"
+						<select
 							name="plugin-name"
 							id="plugin-name"
 							value={pluginName}
 							onChange={(e) => setPluginName(e.target.value.toLowerCase())}
-							placeholder="Enter the plugin name"
-						/>
+						>
+							{plugins.length > 0 ? (
+								<>
+									<option value="">Select a plugin</option>
+									{plugins.map((plugin) => (
+										<option key={plugin} value={plugin.toLowerCase()}>
+											{plugin}
+										</option>
+									))}
+								</>
+							) : (
+								<option value="">Loading plugins...</option>
+							)}
+						</select>
 					</div>
 					<button className="btn" onClick={handleSubmit}>
 						Fetch sites with this plugin
@@ -264,7 +301,11 @@ const App = () => {
 							{sites.filter((site) => site.updateAvailable === 'available')
 								.length > 1 && (
 								<button className="sm-btn" onClick={updateAllPlugins}>
-									Update all sites to v.{sites[0].updateVersion}
+									Update all sites to v.
+									{
+										sites.find((site) => site.updateVersion !== null)
+											?.updateVersion
+									}
 								</button>
 							)}
 

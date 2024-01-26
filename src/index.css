@@ -78,7 +78,7 @@ button {
   margin-bottom: 10px;
 }
 
-.form-control input {
+.form-control select {
   width: 100%;
   padding: 15px;
   border: 1px solid #181516;
@@ -87,7 +87,7 @@ button {
   font-weight: 400;
 }
 
-.form-control input:focus {
+.form-control select:focus {
   outline: none;
 }
 
