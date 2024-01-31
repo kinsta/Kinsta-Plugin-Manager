@@ -182,43 +182,45 @@ const App = () => {
 	// Update all plugins
 	const updateAllPlugins = async () => {
 		sites.map(async (site) => {
-			const environmentId = site.env_id;
+			if (site.updateAvailable === 'available') {
+				const environmentId = site.env_id;
 
-			const resp = await fetch(
-				`${KinstaAPIUrl}/sites/environments/${environmentId}/plugins`,
-				{
-					method: 'PUT',
-					headers: {
-						'Content-Type': 'application/json',
-						Authorization: `Bearer ${process.env.REACT_APP_KINSTA_API_KEY}`,
-					},
-					body: JSON.stringify({
-						name: pluginName,
-						update_version: site.updateVersion,
-					}),
+				const resp = await fetch(
+					`${KinstaAPIUrl}/sites/environments/${environmentId}/plugins`,
+					{
+						method: 'PUT',
+						headers: {
+							'Content-Type': 'application/json',
+							Authorization: `Bearer ${process.env.REACT_APP_KINSTA_API_KEY}`,
+						},
+						body: JSON.stringify({
+							name: pluginName,
+							update_version: site.updateVersion,
+						}),
+					}
+				);
+
+				const data = await resp.json();
+				if (data.status === 202) {
+					setShowStatusBar(true);
+
+					const interval = setInterval(() => {
+						checkPluginUpdateStatus(data.operation_id)
+							.then((status) => {
+								console.log(status);
+
+								if (status === 200) {
+									setShowStatusBar(false);
+									clearInterval(interval);
+									fetchSites();
+								}
+							})
+							.catch((error) => {
+								// Handle any errors that occur during the promise resolution
+								console.error('Error:', error);
+							});
+					}, 5000);
 				}
-			);
-
-			const data = await resp.json();
-			if (data.status === 202) {
-				setShowStatusBar(true);
-
-				const interval = setInterval(() => {
-					checkPluginUpdateStatus(data.operation_id)
-						.then((status) => {
-							console.log(status);
-
-							if (status === 200) {
-								setShowStatusBar(false);
-								clearInterval(interval);
-								fetchSites();
-							}
-						})
-						.catch((error) => {
-							// Handle any errors that occur during the promise resolution
-							console.error('Error:', error);
-						});
-				}, 5000);
 			}
 		});
 	};
