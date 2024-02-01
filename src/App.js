@@ -42,7 +42,7 @@ const App = () => {
 
 			return {
 				id: siteId,
-				name: site.name,
+				name: site.display_name,
 				environments: environments,
 			};
 		});
