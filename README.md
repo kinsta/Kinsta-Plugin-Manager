@@ -4,7 +4,7 @@
 
 This guide walks you through the process of creating a WordPress plugin manager. This tool is designed to efficiently identify all the sites under your Kinsta company account that are utilizing a particular plugin. Once identified, you'll have the flexibility to update this plugin either across all these sites at once or on a site-by-site basis.
 
-Read the [full article]().
+Read the [full article](https://kinsta.com/blog/bulk-update-plugins-wordpress/).
 
 ## Installation
 1. Clone or fork the repository.
